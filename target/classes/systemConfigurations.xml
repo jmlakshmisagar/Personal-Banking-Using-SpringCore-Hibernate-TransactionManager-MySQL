@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans.xsd
+           http://www.springframework.org/schema/context
+           http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<!-- DataSource configuration -->
+	<bean id="dataSource"
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName"
+			value="com.mysql.cj.jdbc.Driver" />
+		<property name="url"
+			value="jdbc:mysql://localhost:3306/BankingSystem?useSSL=false" />
+		<property name="username" value="root" />
+		<property name="password" value="manager" />
+	</bean>
+
+	<!-- SessionFactory configuration -->
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="packagesToScan" value="bank.system.pojo" />
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+				<prop key="hibernate.show_sql">true</prop>
+				<prop key="hibernate.hbm2ddl.auto">update</prop>
+			</props>
+		</property>
+	</bean>
+
+	<!-- Customer bean configuration -->
+	<bean id="customer" class="bank.system.pojo.Customer" />
+
+	<!-- Account bean configuration -->
+	<bean id="account" class="bank.system.pojo.Account" />
+
+	<!-- Transaction bean configuration -->
+	<bean id="transaction" class="bank.system.pojo.Transaction" />
+
+	<!-- DAO bean configuration -->
+	<bean id="customerCreation"
+		class="bank.system.dao.CustomerCreation">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	<bean id="listAllCustomers"
+		class="bank.system.dao.ListAllCustomers">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	<bean id="withdrawAmount" class="bank.system.dao.WithdrawAmount">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	<bean id="addAmount" class="bank.system.dao.AddAmount">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	<bean id="balanceCheck" class="bank.system.dao.BalanceCheck">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	<bean id="listLastTransactions"
+		class="bank.system.dao.ListLastTransactions">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	<bean id="transactAmount" class="bank.system.dao.TransactAmount">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+</beans>
